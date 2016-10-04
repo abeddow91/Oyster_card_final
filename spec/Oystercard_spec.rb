@@ -15,4 +15,14 @@ it "should raise an error if the top up limit is reached" do
   subject.top_up(maximum)
   expect {subject.top_up(1)}.to raise_error("The maximum top up value of #{maximum} has been reached!")
 end
+
+it "should see if a card has touched in" do
+  subject.touch_in
+  expect(subject.in_journey?).to eq true
+end
+
+it "should see if a card has touched out" do
+  subject.touch_out
+  expect(subject.in_journey?).to eq false
+end
 end
