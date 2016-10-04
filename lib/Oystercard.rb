@@ -1,28 +1,19 @@
 class Oystercard
 
-  attr_reader :balance, :in_journey
+  attr_reader :balance
   MAXIMUM_LIMIT = 90
 
-def initialize
-  @balance = 0
-  @in_journey = false
-end
+  def initialize
+    @balance = 0
+  end
 
-def top_up(amount)
-  raise "The maximum top up value of #{MAXIMUM_LIMIT} has been reached!" if @balance + amount > MAXIMUM_LIMIT
-  @balance += amount
-end
+  def top_up(amount)
+    raise "The maximum top up value of #{MAXIMUM_LIMIT} has been reached!" if @balance + amount > MAXIMUM_LIMIT
+    @balance += amount
+  end
 
-def touch_in
-  @in_journey = true
-end
-
-def in_journey?
-  @in_journey
-end
-
-def touch_out
-  @in_journey = false
-end
+  def deduct(amount)
+    @balance -= amount
+  end
 
 end
