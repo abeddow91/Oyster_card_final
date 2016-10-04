@@ -23,4 +23,9 @@ it 'should deduct the amount for the trip from balance' do
   expect(subject.balance).to eq 5
 end
 
+it "should see if a card has touched out" do
+  subject.touch_out
+  expect(subject.in_journey?).to eq false
+end
+
 end
