@@ -28,4 +28,8 @@ it "should see if a card has touched out" do
   expect(subject.in_journey?).to eq false
 end
 
+it "should check minimum balance" do
+  expect {subject.touch_in}.to raise_error "Insufficient funds"
+end
+
 end
