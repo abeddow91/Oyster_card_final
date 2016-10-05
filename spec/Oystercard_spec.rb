@@ -21,8 +21,9 @@ end
 
 it 'should deduct the amount for the trip from balance' do
   card.top_up(15)
-  card.deduct(10)
-  expect(card.balance).to eq 5
+  card.touch_out
+  deducted_value = card.balance - Oystercard::MINIMUM_FARE
+  expect(card.touch_out).to eq deducted_value
 end
 
 it "should see if a card has touched out" do
