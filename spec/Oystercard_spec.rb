@@ -8,6 +8,10 @@ describe Oystercard do
     expect(card.balance).to eq 0
   end
 
+  # it 'should have an empty list of jurneys by default' do
+  #   expect(card.journeys).to be_empty
+  # end
+
   describe '#top_up' do
     it { is_expected.to respond_to(:top_up).with(1).argument}
 
@@ -28,9 +32,9 @@ describe Oystercard do
 
     it 'should deduct the amount for the trip from balance' do
       card.top_up(15)
-      card.touch_out
+      card.touch_out(station)
       deducted_value = card.balance - Oystercard::MINIMUM_FARE
-      expect(card.touch_out).to eq deducted_value
+      expect(card.touch_out(station)).to eq deducted_value
     end
   end
 
@@ -50,17 +54,35 @@ describe Oystercard do
   end
 
   describe '#touch_out' do
-    it { is_expected.to respond_to(:touch_out) }
+    it { is_expected.to respond_to(:touch_out).with(1).argument }
+    let(:entry_station) {double :station}
+    let(:exit_station) {double :station}
 
     it "should see if a card has touched out" do
-      card.touch_out
+      card.touch_out(station)
       expect(card.in_journey?).to eq false
     end
 
     it "should charge the card for the minimum fare" do
       card.top_up(15)
       card.touch_in(station)
-      expect {card.touch_out}.to change{card.balance}.by(-Oystercard::MINIMUM_FARE)
+      expect {card.touch_out(station)}.to change{card.balance}.by(-Oystercard::MINIMUM_FARE)
     end
+
+    it 'stores exit station' do
+      card.top_up(15)
+      card.touch_in(station)
+      card.touch_out(station)
+      expect(card.exit_station).to eq station
+    end
+  end
+
+  let(:journey) { {entry_station: station, exit_station: station} }
+
+  it 'stores a journey' do
+    card.top_up(15)
+    card.touch_in(station)
+    card.touch_out(station)
+    expect(card.history).to include journey
   end
 end
