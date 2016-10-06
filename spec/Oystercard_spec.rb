@@ -8,9 +8,13 @@ describe Oystercard do
     expect(card.balance).to eq 0
   end
 
-  # it 'should have an empty list of jurneys by default' do
-  #   expect(card.journeys).to be_empty
-  # end
+  it 'should have an empty journey by default' do
+    expect(card.journey).to be_empty
+  end
+
+  it 'have a clear journey history by default' do
+    expect(card.journey_history).to be_empty
+  end
 
   describe '#top_up' do
     it { is_expected.to respond_to(:top_up).with(1).argument}
@@ -75,14 +79,13 @@ describe Oystercard do
       card.touch_out(station)
       expect(card.exit_station).to eq station
     end
+
+    it 'logs the journey history of the card' do
+      card.top_up(15)
+      card.touch_in(entry_station)
+      card.touch_out(exit_station)
+      expect(card.journey_history).to include({entry_station: entry_station, exit_station: exit_station})
+    end
   end
 
-  let(:journey) { {entry_station: station, exit_station: station} }
-
-  it 'stores a journey' do
-    card.top_up(15)
-    card.touch_in(station)
-    card.touch_out(station)
-    expect(card.history).to include journey
-  end
 end
