@@ -1,6 +1,8 @@
  require_relative 'station'
 
 class Journey
+  MINIMUM_FARE = 1
+  PENALTY_FARE = 6
 
   attr_reader :journey
 
@@ -22,4 +24,7 @@ class Journey
     !(@journey[:exit_station] && @journey[:entry_station]).nil?
   end
 
+  def fare
+    complete? ? MINIMUM_FARE : PENALTY_FARE
+  end
 end
