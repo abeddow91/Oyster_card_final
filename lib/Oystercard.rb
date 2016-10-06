@@ -10,7 +10,6 @@ class Oystercard
     @balance = balance
     @journey_history = []
     @in_use = false
-    @current_journey = Journey.new
   end
 
   def top_up(amount)
@@ -20,6 +19,7 @@ class Oystercard
 
   def touch_in(station)
     raise "Insufficient funds" if @balance < MINIMUM_BALANCE
+    @current_journey = Journey.new
     @current_journey.start(station)
     @in_use = true
   end

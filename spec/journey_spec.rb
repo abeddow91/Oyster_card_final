@@ -5,14 +5,6 @@ describe Journey do
   let(:start_station) { double :start_station, :name => "Kings X", :zone => 2}
   let(:end_station) { double :end_station, :name => "Liverpool", :zone => 1}
 
-  # it 'has an entry station when started' do
-  #   expect(tube_journey.journey[:entry_station]).to eq "Kings X"
-  # end
-  #
-  # it 'has a entry zone when started' do
-  #   expect(tube_journey.journey[:entry_zone]).to eq 2
-  # end
-
   describe '#start' do
 
     it 'has an entry station when the journey is started' do

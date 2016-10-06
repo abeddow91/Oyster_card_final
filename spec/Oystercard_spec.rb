@@ -10,10 +10,6 @@ describe Oystercard do
     expect(card.balance).to eq 0
   end
 
-  it 'should not be on a journey by default' do
-    expect(card.current_journey.journey).to eq ({:entry_station => nil, :entry_zone => nil, :exit_station => nil, :exit_zone => nil})
-  end
-
   it 'have a clear journey history by default' do
     expect(card.journey_history).to be_empty
   end
@@ -50,6 +46,12 @@ describe Oystercard do
       card.top_up(10)
       card.touch_in(start_station)
       expect(card).to be_in_journey
+    end
+
+    it 'should clear preivous journey' do
+      card.top_up(10)
+      card.touch_in(start_station)
+      expect(card.current_journey.journey[:exit_station]).to eq nil
     end
 
   end
