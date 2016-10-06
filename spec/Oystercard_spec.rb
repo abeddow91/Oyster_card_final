@@ -30,7 +30,7 @@ describe Oystercard do
       expect {card.top_up(1)}.to raise_error("The maximum top up value of #{maximum} has been reached!")
     end
 
-  end
+  end 
 
   describe '#deduct' do
 
