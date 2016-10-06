@@ -1,18 +1,31 @@
 require 'journey'
 
 describe Journey do
-  let(:start_station) { double :start_station, :name => "Kings X", :zone => 2}
-  subject(:tube_journey) {described_class.new(start_station)}
+  subject(:tube_journey) {described_class.new}
 
-  it 'has an entry station when started' do
-    expect(tube_journey.journey[:entry_station]).to eq "Kings X"
+  # it 'has an entry station when started' do
+  #   expect(tube_journey.journey[:entry_station]).to eq "Kings X"
+  # end
+  #
+  # it 'has a entry zone when started' do
+  #   expect(tube_journey.journey[:entry_zone]).to eq 2
+  # end
+
+  describe '#start' do
+    let(:start_station) { double :start_station, :name => "Kings X", :zone => 2}
+
+    it 'has an entry station when the journey is started' do
+      tube_journey.start(start_station)
+      expect(tube_journey.journey[:entry_station]).to eq "Kings X"
+    end
+
+    it 'has and entry zone when the journey is started' do
+      tube_journey.start(start_station)
+      expect(tube_journey.journey[:entry_zone]).to eq 2
+    end
   end
 
-  it 'has a entry zone when started' do
-    expect(tube_journey.journey[:entry_zone]).to eq 2
-  end
-
-  describe '#finsih' do
+  describe '#finish' do
     let(:end_station) { double :end_station, :name => "Liverpool", :zone => 1}
 
     it 'has an exit station when the journey is finished' do
@@ -23,6 +36,27 @@ describe Journey do
     it 'has an exit zone when the journey is finished' do
       tube_journey.finish(end_station)
       expect(tube_journey.journey[:exit_zone]).to eq 1
+    end
+  end
+
+  describe '#complete' do
+    let(:start_station) { double :start_station, :name => "Kings X", :zone => 2}
+    let(:end_station) { double :end_station, :name => "Liverpool", :zone => 1}
+
+    it 'should tell us if a journey is complete' do
+      tube_journey.start(start_station)
+      tube_journey.finish(end_station)
+      expect(tube_journey.complete?).to be true
+    end
+
+    it 'should tell us if a journey is incomplete due to not touching in' do
+      tube_journey.finish(end_station)
+      expect(tube_journey.complete?).to be false
+    end
+
+    it 'should tell us if a journey is incomplete due to not touching out' do
+      tube_journey.start(start_station)
+      expect(tube_journey.complete?).to be false
     end
   end
 end
