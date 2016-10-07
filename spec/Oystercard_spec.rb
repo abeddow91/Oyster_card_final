@@ -53,8 +53,9 @@ describe Oystercard do
     end
     it { is_expected.to respond_to(:touch_out).with(1).argument }
 
-    it "should charge the card the minimum fare if journey completed correctly" do
-      expect {card.touch_out(end_station)}.to change{card.balance}.by(-Journey::MINIMUM_FARE)
+    it "should charge the card the correct fare if journey completed correctly" do
+      card.touch_out(end_station)
+      expect {card.touch_out(end_station)}.to change{card.balance}.by(-card.journeys.correct_fare)
     end
 
     it 'logs the journey history of the card' do
