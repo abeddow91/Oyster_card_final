@@ -28,7 +28,15 @@ describe JourneyLog do
       journey_log.start(entry_station)
     end
 
-    it 'should end a journey with an exit station' do
+    it 'should log a completed journey' do
+      journey_log.finish(exit_station)
+      expect(journey_log.journey_history[-1].journey).to include({entry_station: "Kings X", entry_zone: 2, exit_station: "Liverpool", exit_zone: 1})
+    end
+  end
+
+  describe '#incomplete journeys' do
+
+    it 'should not complete a journey if journey wasn\'t started' do
       journey_log.finish(exit_station)
       expect(journey_log.current_journey.journey[:exit_station]).to eq "Liverpool"
     end
