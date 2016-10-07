@@ -11,6 +11,10 @@ describe JourneyLog do
     expect(journey_log.current_journey).to be_an_instance_of(Journey)
   end
 
+  it 'have a clear journey history by default' do
+    expect(journey_log.journey_history).to be_empty
+  end
+
   describe '#start' do
     it 'should start a journey with an entry station' do
       journey_log.start(entry_station)

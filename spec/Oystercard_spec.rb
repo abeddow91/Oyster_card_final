@@ -10,12 +10,8 @@ describe Oystercard do
     expect(card.balance).to eq 0
   end
 
-  it 'have a clear journey history by default' do
-    expect(card.journey_history).to be_empty
-  end
-
   it 'should not be in use when created' do
-    expect(card).not_to be_in_journey
+    expect(card.journeys.current_journey.journey).to eq({:entry_station => nil, :entry_zone => nil, :exit_station => nil, :exit_zone => nil})
   end
 
   describe '#top_up' do
@@ -41,16 +37,10 @@ describe Oystercard do
       expect {card.touch_in(start_station)}.to raise_error "Insufficient funds"
     end
 
-    it 'should change the card to in use on touch in' do
+    it 'should charge penalty fare if double touch in' do
       card.top_up(10)
       card.touch_in(start_station)
-      expect(card).to be_in_journey
-    end
-
-    it 'should clear preivous journey' do
-      card.top_up(10)
-      card.touch_in(start_station)
-      expect(card.current_journey.journey[:exit_station]).to eq nil
+      expect{card.touch_in(start_station)}.to change{card.balance}.by(-Journey::PENALTY_FARE)
     end
 
   end
@@ -63,19 +53,13 @@ describe Oystercard do
     end
     it { is_expected.to respond_to(:touch_out).with(1).argument }
 
-    it "should see if a card has touched out" do
-      card.touch_out(end_station)
-      expect(card.in_journey?).to eq false
-    end
-
     it "should charge the card the minimum fare if journey completed correctly" do
-      card.touch_out(end_station)
       expect {card.touch_out(end_station)}.to change{card.balance}.by(-Journey::MINIMUM_FARE)
     end
 
     it 'logs the journey history of the card' do
       card.touch_out(end_station)
-      expect(card.journey_history[-1].journey).to include({entry_station: "Kings X", entry_zone: 2, exit_station: "Liverpool", exit_zone: 1})
+      expect(card.journeys.journey_history[-1].journey).to include({entry_station: "Kings X", entry_zone: 2, exit_station: "Liverpool", exit_zone: 1})
     end
   end
 

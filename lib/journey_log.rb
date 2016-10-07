@@ -18,6 +18,14 @@ class JourneyLog
     journey_checker
   end
 
+  def correct_fare
+    @current_journey.fare
+  end
+
+  def creat_journey
+    @current_journey = Journey.new
+  end
+
   private
 
   def journey_checker
@@ -26,6 +34,7 @@ class JourneyLog
 
   def log_complete
     @journey_history << @current_journey
-    @current_journey = Journey.new
   end
+
+
 end
