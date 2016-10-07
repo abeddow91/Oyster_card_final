@@ -27,4 +27,4 @@ class Journey
   def fare
     complete? ? MINIMUM_FARE : PENALTY_FARE
   end
-end
+end 

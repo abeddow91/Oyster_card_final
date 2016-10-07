@@ -32,7 +32,7 @@ class Oystercard
     @current_journey.finish(station)
     deduct(@current_journey.fare)
     @in_use = false
-    history
+    history 
   end
 
 

@@ -31,7 +31,7 @@ describe Journey do
     end
   end
 
-  describe '#complete' do
+  describe '#complete' do 
 
     it 'should tell us if a journey is complete' do
       tube_journey.start(start_station)

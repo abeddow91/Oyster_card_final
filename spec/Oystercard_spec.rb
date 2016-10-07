@@ -27,9 +27,8 @@ describe Oystercard do
     end
 
     it "should raise an error if the top up limit is reached" do
-      maximum = Oystercard::MAXIMUM_LIMIT
-      card.top_up(maximum)
-      expect {card.top_up(1)}.to raise_error("The maximum top up value of #{maximum} has been reached!")
+      card.top_up(Oystercard::MAXIMUM_LIMIT)
+      expect {card.top_up(1)}.to raise_error("The maximum top up value of #{Oystercard::MAXIMUM_LIMIT} has been reached!")
     end
 
   end
@@ -76,7 +75,7 @@ describe Oystercard do
 
     it 'logs the journey history of the card' do
       card.touch_out(end_station)
-      expect(card.journey_history[0].journey).to include({entry_station: "Kings X", entry_zone: 2, exit_station: "Liverpool", exit_zone: 1})
+      expect(card.journey_history[-1].journey).to include({entry_station: "Kings X", entry_zone: 2, exit_station: "Liverpool", exit_zone: 1})
     end
   end
 
